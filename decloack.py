@@ -1,5 +1,4 @@
 import sys
-import argparse
 
 # Define the neon colors
 NEON_GREEN = "\033[92m"
@@ -66,7 +65,7 @@ def print_ascii_art():
 | $$  | $$| $$_____/| $$      | $$| $$  | $$ /$$__  $$| $$_  $$ 
 | $$$$$$$/|  $$$$$$$|  $$$$$$$| $$|  $$$$$$/|  $$$$$$$| $$ \\  $$
 |_______/  \\_______/ \\_______/|__/ \\______/  \\_______/|__/  \\__/
-                                                                
+                                           v-1.0                     
                                                                 
 """
     print(f"{NEON_CYAN}{ascii_art}{RESET_COLOR}")
@@ -75,32 +74,31 @@ def main():
     # Print ASCII art
     print_ascii_art()
 
-    # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Select and execute TOR de-anonymization techniques.")
-    parser.add_argument("-l", "--list", action="store_true", help="List all available techniques")
-    parser.add_argument("-e", "--execute", type=int, choices=range(1, len(techniques)+1), help="Execute a specific technique by number")
+    while True:
+        print(f"\n{NEON_CYAN}Main Menu:{RESET_COLOR}")
+        print(f"{NEON_CYAN}1. List Techniques{RESET_COLOR}")
+        print(f"{NEON_CYAN}2. Execute Technique{RESET_COLOR}")
+        print(f"{NEON_CYAN}3. Quit{RESET_COLOR}")
 
-    try:
-        args = parser.parse_args()
+        choice = input(f"{NEON_YELLOW}Enter your choice (1/2/3): {RESET_COLOR}")
 
-        if args.list:
+        if choice == '1':
             list_techniques()
+        elif choice == '2':
+            try:
+                tech_choice = int(input(f"{NEON_YELLOW}Enter the technique number to execute (1-{len(techniques)}): {RESET_COLOR}"))
+                if 1 <= tech_choice <= len(techniques):
+                    print(f"{NEON_CYAN}Selected Technique: {techniques[tech_choice-1]}{RESET_COLOR}")
+                    functions_map[tech_choice]()
+                else:
+                    print(f"{NEON_YELLOW}Invalid technique number. Please try again.{RESET_COLOR}")
+            except ValueError:
+                print(f"{NEON_YELLOW}Invalid input. Please enter a number.{RESET_COLOR}")
+        elif choice == '3':
+            print(f"{NEON_YELLOW}Exiting...{RESET_COLOR}")
             sys.exit()
-
-        if args.execute:
-            selected_technique = args.execute
-            print(f"{NEON_CYAN}Selected Technique: {techniques[selected_technique-1]}{RESET_COLOR}")
-            # Execute the selected technique
-            functions_map[selected_technique]()
-            sys.exit()
-
-        # If no arguments are provided
-        print(f"{NEON_YELLOW}No arguments provided. Use -h or --help for help.{RESET_COLOR}")
-        list_techniques()
-        
-    except Exception as e:
-        print(f"{NEON_YELLOW}An error occurred: {e}{RESET_COLOR}")
-        sys.exit(1)
+        else:
+            print(f"{NEON_YELLOW}Invalid choice. Please enter 1, 2, or 3.{RESET_COLOR}")
 
 if __name__ == "__main__":
     main()
