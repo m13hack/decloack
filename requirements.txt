@@ -2,6 +2,5 @@ click
 requests
 scapy
 pyshark
-maltego-python
 recon-ng
 hunchly
